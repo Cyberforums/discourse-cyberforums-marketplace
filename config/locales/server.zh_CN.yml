@@ -1,0 +1,7 @@
+zh_CN:
+  site_settings:
+    cyberforums_marketplace_enabled: "启用 Cyberforums 商城（店铺组、灯鹿实名门槛、店铺资料）"
+    cyberforums_marketplace_shop_group_prefix: "店铺组的组名前缀"
+    cyberforums_marketplace_verified_group: "灯鹿实名用户所在的群组；只有该组成员能加入店铺组"
+    cyberforums_marketplace_shop_messageable_level: "新店铺组谁能发私信（3 = 组员、版主、管理员；99 = 所有人）"
+    cyberforums_marketplace_guest_api_enabled: "启用评论访客账号接口（仅管理员 API 密钥）"

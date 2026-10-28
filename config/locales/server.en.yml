@@ -1,0 +1,7 @@
+en:
+  site_settings:
+    cyberforums_marketplace_enabled: "Enable Cyberforums marketplace (shop-* groups, DeerLogin gate, vendor fields)"
+    cyberforums_marketplace_shop_group_prefix: "Group name prefix that marks a shop group"
+    cyberforums_marketplace_verified_group: "Group whose members passed DeerLogin real-name verification; only they may join shop groups"
+    cyberforums_marketplace_shop_messageable_level: "Who can message a new shop group (3 = members, moderators, admins; 99 = everyone)"
+    cyberforums_marketplace_guest_api_enabled: "Enable the admin-only guest (staged user) endpoint used by product-comments"

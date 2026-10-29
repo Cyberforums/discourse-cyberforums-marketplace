@@ -1,7 +1,9 @@
 zh_CN:
   site_settings:
-    cyberforums_marketplace_enabled: "启用 Cyberforums 商城（店铺组、灯鹿实名门槛、店铺资料）"
+    cyberforums_marketplace_enabled: "启用 Cyberforums 商城（店铺组镜像、店铺资料、店铺清单接口）"
     cyberforums_marketplace_shop_group_prefix: "店铺组的组名前缀"
-    cyberforums_marketplace_verified_group: "灯鹿实名用户所在的群组；只有该组成员能加入店铺组"
     cyberforums_marketplace_shop_messageable_level: "新店铺组谁能发私信（3 = 组员、版主、管理员；99 = 所有人）"
     cyberforums_marketplace_guest_api_enabled: "启用评论访客账号接口（仅管理员 API 密钥）"
+    cyberforums_marketplace_woo_webhook_enabled: "接收文派集市（WooCommerce）的商户同步 webhook"
+    cyberforums_marketplace_woo_webhook_secret: "WooCommerce webhook 签名密钥（与集市 webhook 设置里的密钥一致）"
+    cyberforums_marketplace_woo_webhook_source: "可选：只接受来自该站点地址的 webhook（X-WC-Webhook-Source），留空不检查"

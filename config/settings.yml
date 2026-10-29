@@ -5,9 +5,6 @@ plugins:
   cyberforums_marketplace_shop_group_prefix:
     default: "shop-"
     client: false
-  cyberforums_marketplace_verified_group:
-    default: "deerlogin-verified"
-    client: false
   cyberforums_marketplace_shop_messageable_level:
     default: "3"
     type: enum
@@ -17,4 +14,14 @@ plugins:
     client: false
   cyberforums_marketplace_guest_api_enabled:
     default: false
+    client: false
+  cyberforums_marketplace_woo_webhook_enabled:
+    default: false
+    client: false
+  cyberforums_marketplace_woo_webhook_secret:
+    default: ""
+    secret: true
+    client: false
+  cyberforums_marketplace_woo_webhook_source:
+    default: ""
     client: false

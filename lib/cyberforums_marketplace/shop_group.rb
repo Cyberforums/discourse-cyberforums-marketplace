@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module ::CyberforumsMarketplace
+  # Shop groups (shop-<slug>) mirror approved merchants of the WooCommerce
+  # marketplace (MarketKing). The forum is not a place to open shops: groups are
+  # created/updated only by the signed WooCommerce webhook (see WooSync).
   module ShopGroup
-    GATE_LOG = "cyberforums_marketplace_gate"
-
     def self.prefix
       SiteSetting.cyberforums_marketplace_shop_group_prefix.to_s.presence || "shop-"
     end
@@ -13,23 +14,10 @@ module ::CyberforumsMarketplace
     end
 
     def self.shop_groups
-      Group.where(automatic: false).where("name LIKE ?", "#{Group.sanitize_sql_like(prefix)}%").order(:name)
-    end
-
-    def self.verified_group
-      name = SiteSetting.cyberforums_marketplace_verified_group.to_s.strip
-      name.present? ? Group.find_by(name: name) : nil
-    end
-
-    def self.verified_user_ids
-      g = verified_group
-      g ? g.group_users.pluck(:user_id).to_set : Set.new
-    end
-
-    # Fail closed: missing verified group = nobody counts as verified.
-    def self.verified?(user)
-      g = verified_group
-      g.present? && user.present? && g.group_users.exists?(user_id: user.id)
+      Group
+        .where(automatic: false)
+        .where("name LIKE ?", "#{Group.sanitize_sql_like(prefix)}%")
+        .order(:name)
     end
 
     # Same settings as the 10-28 pilot group shop-demo-wenpai (admin-changes doc §1).
@@ -56,38 +44,6 @@ module ::CyberforumsMarketplace
       ids = SiteSetting.pm_tags_allowed_for_groups.to_s.split("|").map(&:strip).reject(&:empty?)
       return if ids.include?(group.id.to_s)
       SiteSetting.pm_tags_allowed_for_groups = (ids + [group.id.to_s]).join("|")
-    end
-
-    # DeerLogin gate: only verified users may stay in a shop group. No bypass for staff.
-    def self.enforce_verified!(user, group)
-      return false unless shop_group?(group)
-      return false if verified?(user)
-      group.remove(user)
-      log_gate(user, group, "removed_unverified")
-      true
-    end
-
-    # Losing verification removes the user from every shop group.
-    def self.on_left_verified_group!(user, group)
-      vg = verified_group
-      return [] if vg.nil? || group.id != vg.id
-      removed = []
-      shop_groups.joins(:group_users).where(group_users: { user_id: user.id }).each do |g|
-        g.remove(user)
-        log_gate(user, g, "removed_lost_verification")
-        removed << g.name
-      end
-      removed
-    end
-
-    def self.log_gate(user, group, action)
-      Rails.logger.warn("[cyberforums-marketplace] #{action} user=#{user.username} group=#{group.name}")
-      StaffActionLogger.new(Discourse.system_user).log_custom(
-        GATE_LOG,
-        { action: action, username: user.username, group: group.name },
-      )
-    rescue StandardError => e
-      Rails.logger.warn("[cyberforums-marketplace] gate log failed: #{e.class}")
     end
   end
 end

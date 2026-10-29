@@ -19,7 +19,7 @@ module ::CyberforumsMarketplace
                  avatar_url: params[:avatar_url],
                )
     rescue GuestUsers::Error => e
-      render json: { error: e.message }, status: 422
+      render json: { error: e.message }, status: :unprocessable_entity
     end
   end
 end

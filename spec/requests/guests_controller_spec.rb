@@ -11,7 +11,12 @@ RSpec.describe CyberforumsMarketplace::GuestsController do
   end
 
   it "creates a staged guest" do
-    post "/marketplace/guests.json", params: { email: "Guest@Example.com", name: "小王", username: "xiaowang" }
+    post "/marketplace/guests.json",
+         params: {
+           email: "Guest@Example.com",
+           name: "小王",
+           username: "xiaowang",
+         }
     expect(response.status).to eq(200)
     u = User.find(response.parsed_body["id"])
     expect(u.staged).to eq(true)
@@ -19,12 +24,19 @@ RSpec.describe CyberforumsMarketplace::GuestsController do
   end
 
   it "is idempotent for the same email" do
-    2.times { post "/marketplace/guests.json", params: { email: "g@example.com", name: "A", username: "ga" } }
+    2.times do
+      post "/marketplace/guests.json", params: { email: "g@example.com", name: "A", username: "ga" }
+    end
     expect(UserEmail.where(email: "g@example.com").count).to eq(1)
   end
 
   it "never renames a real member" do
-    post "/marketplace/guests.json", params: { email: "real@example.com", name: "Hacker", username: "x" }
+    post "/marketplace/guests.json",
+         params: {
+           email: "real@example.com",
+           name: "Hacker",
+           username: "x",
+         }
     expect(response.status).to eq(200)
     expect(member.reload.name).to eq("Real Name")
     expect(response.parsed_body["staged"]).to eq(false)

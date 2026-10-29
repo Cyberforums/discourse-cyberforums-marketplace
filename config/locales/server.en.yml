@@ -13,3 +13,6 @@ en:
     cyberforums_marketplace_stale_idle_days: "Days without a new post before a shop conversation is stale"
     cyberforums_marketplace_stale_hour: "Run the stale check after this hour (Asia/Shanghai, 0–23, once a day)"
     cyberforums_marketplace_stale_tag: "Tag used for stale shop conversations"
+    cyberforums_marketplace_pm_commerce_sidebar_enabled: "Show read-only commerce context (product/orders) atop shop PMs via chat proxy"
+    cyberforums_marketplace_chat_api_base: "marketplace-chat public base URL"
+    cyberforums_marketplace_chat_proxy_token: "Server proxy token; must match chat FLUSH_TOKEN (secret, not client)"

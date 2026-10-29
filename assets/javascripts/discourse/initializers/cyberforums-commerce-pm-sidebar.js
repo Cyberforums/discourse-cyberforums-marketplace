@@ -109,7 +109,11 @@ function mountPanel(html) {
 
 export default apiInitializer("1.8.0", (api) => {
   api.onPageChange(() => {
-    if (!settings.cyberforums_marketplace_pm_commerce_sidebar_enabled) {
+    // Plugin JS has no theme `settings` global — read SiteSetting via container.
+    const siteSettings =
+      api.container.lookup("service:site-settings") ||
+      api.container.lookup("site-settings:main");
+    if (!siteSettings?.cyberforums_marketplace_pm_commerce_sidebar_enabled) {
       mountPanel("");
       return;
     }

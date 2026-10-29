@@ -1,0 +1,65 @@
+/* 方向 C · 单据（R1 小票 + R3 短笺 的去 AI 味版本）：细线、虚线、点线引导、无锯齿无投影。 */
+[data-direction="C"] {
+  --cf-c-paper: var(--cf-color-bg-surface);
+  --cf-c-rule: var(--cf-color-border-strong);
+  --cf-c-leader: var(--cf-color-border-strong);
+  --cf-c-display: var(--cf-font-family-display);
+  --cf-c-pad: var(--cf-space-6);
+}
+
+[data-direction="C"] .cf-thread { background: var(--cf-color-bg-subtle); }
+[data-direction="C"] .cf-msg--mine { flex-direction: row-reverse; }
+[data-direction="C"] .cf-msg--mine .cf-msg__main { align-items: flex-end; }
+[data-direction="C"] .cf-msg__name { display: none; }
+[data-direction="C"] .cf-bubble {
+  padding: var(--cf-space-4) var(--cf-space-5); border-radius: var(--cf-radius-xs);
+  background: var(--cf-c-paper); border: var(--cf-border-width-hairline) solid var(--cf-color-border-default);
+}
+[data-direction="C"] .cf-msg--mine .cf-bubble { background: var(--cf-color-bubble-mine-bg); border-color: var(--cf-color-brand-border); }
+
+/* 询商卡：店名居中衬线 → 短笺留言 → 商品与点线价格 → 文字链 */
+[data-direction="C"] .cf-inquiry-card {
+  display: flex; flex-direction: column; gap: var(--cf-space-5);
+  padding: var(--cf-c-pad); background: var(--cf-c-paper);
+  border: var(--cf-border-width-hairline) solid var(--cf-color-border-default); border-radius: var(--cf-radius-xs);
+}
+[data-direction="C"] .cf-inquiry-card__head {
+  flex-direction: column; align-items: center; gap: var(--cf-space-1); order: 1;
+  padding-bottom: var(--cf-space-4); border-bottom: var(--cf-border-width-hairline) dashed var(--cf-c-rule);
+}
+[data-direction="C"] .cf-inquiry-card__shop { font-family: var(--cf-c-display); font-size: var(--cf-font-size-title-sm); color: var(--cf-color-text-primary); letter-spacing: var(--cf-letter-spacing-wide); }
+[data-direction="C"] .cf-inquiry-card__label { letter-spacing: var(--cf-letter-spacing-wide); }
+[data-direction="C"] .cf-inquiry-card__note { order: 2; font-family: var(--cf-c-display); font-size: var(--cf-font-size-body-lg); line-height: var(--cf-line-height-normal); }
+[data-direction="C"] .cf-inquiry-card__body { order: 3; }
+[data-direction="C"] .cf-inquiry-card__info { flex: 1; }
+[data-direction="C"] .cf-inquiry-card__facts { justify-content: space-between; flex-wrap: nowrap; padding-top: var(--cf-space-2); border-top: var(--cf-border-width-hairline) dotted var(--cf-c-leader); }
+[data-direction="C"] .cf-inquiry-card__price { order: 2; font-size: var(--cf-font-size-body-lg); }
+[data-direction="C"] .cf-inquiry-card__sku { order: 1; font-family: var(--cf-font-family-mono); }
+[data-direction="C"] .cf-inquiry-card__actions { order: 4; text-align: center; padding-top: var(--cf-space-4); border-top: var(--cf-border-width-hairline) dashed var(--cf-c-rule); }
+[data-direction="C"] .cf-inquiry-card__link { color: var(--cf-color-text-primary); text-decoration: underline; text-underline-offset: 0.25em; }
+
+/* 订单卡：回执排版，事件 / Woo 状态 为两条独立字段，点线引导 */
+[data-direction="C"] .cf-order-card {
+  display: flex; flex-direction: column; gap: var(--cf-space-5);
+  padding: var(--cf-c-pad); background: var(--cf-c-paper);
+  border: var(--cf-border-width-hairline) solid var(--cf-color-border-default); border-radius: var(--cf-radius-xs);
+}
+[data-direction="C"] .cf-order-card__head { padding-bottom: var(--cf-space-4); border-bottom: var(--cf-border-width-hairline) dashed var(--cf-c-rule); }
+[data-direction="C"] .cf-order-card__no { font-family: var(--cf-font-family-mono); font-weight: var(--cf-font-weight-medium); }
+[data-direction="C"] .cf-order-card__state { grid-template-columns: 1fr; gap: var(--cf-space-3); }
+[data-direction="C"] .cf-order-card__cell { display: flex; align-items: baseline; gap: var(--cf-space-3); }
+[data-direction="C"] .cf-order-card__k { display: flex; flex: 1; align-items: baseline; gap: var(--cf-space-3); }
+[data-direction="C"] .cf-order-card__k::after { content: ""; flex: 1; border-bottom: var(--cf-border-width-hairline) dotted var(--cf-c-leader); }
+[data-direction="C"] .cf-order-card__total { padding-top: var(--cf-space-4); border-top: var(--cf-border-width-hairline) solid var(--cf-color-text-primary); }
+[data-direction="C"] .cf-order-card__actions { justify-content: center; padding-top: var(--cf-space-4); border-top: var(--cf-border-width-hairline) dashed var(--cf-c-rule); }
+
+/* 事件：回执存根——虚线框一行 */
+[data-direction="C"] .cf-event {
+  padding: var(--cf-space-4) var(--cf-space-5); background: var(--cf-c-paper);
+  border: var(--cf-border-width-hairline) dashed var(--cf-c-rule); border-radius: var(--cf-radius-none);
+}
+[data-direction="C"] .cf-thread .cf-event { align-self: center; width: min(100%, 26rem); }
+[data-direction="C"] .cf-event__meta { font-family: var(--cf-font-family-mono); }
+
+[data-direction="C"] .cf-pm__title { font-family: var(--cf-c-display); }
+[data-direction="C"] .cf-pm__stream { background: var(--cf-c-paper); }

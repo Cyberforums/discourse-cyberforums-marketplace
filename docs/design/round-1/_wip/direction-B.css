@@ -1,0 +1,57 @@
+/* 方向 B · 服务台（Intercom / Zendesk 式中性分栏）。 */
+[data-direction="B"] {
+  --cf-b-panel-head-bg: var(--cf-color-bg-subtle);
+  --cf-b-panel-radius: var(--cf-radius-md);
+  --cf-b-row-gap: var(--cf-space-3);
+}
+
+/* 消息：平铺行，不用气泡底色；区分「我」只靠名字与头像底色 */
+[data-direction="B"] .cf-widget { max-width: 72rem; }
+[data-direction="B"] .cf-thread { gap: var(--cf-space-6); }
+[data-direction="B"] .cf-msg__main { max-width: none; flex: 1; }
+[data-direction="B"] .cf-msg__name { font-size: var(--cf-font-size-body-sm); font-weight: var(--cf-font-weight-semibold); color: var(--cf-color-text-primary); }
+[data-direction="B"] .cf-msg--mine .cf-msg__avatar { background: var(--cf-color-brand-subtle); color: var(--cf-color-text-link); }
+[data-direction="B"] .cf-bubble { padding: 0; }
+
+/* 面板式卡片：头部浅底 + 键值行 + 底部操作 */
+[data-direction="B"] .cf-inquiry-card,
+[data-direction="B"] .cf-order-card {
+  display: flex; flex-direction: column;
+  border: var(--cf-border-width-hairline) solid var(--cf-color-border-default);
+  border-radius: var(--cf-b-panel-radius); background: var(--cf-color-bg-surface); overflow: hidden;
+}
+[data-direction="B"] .cf-inquiry-card__head,
+[data-direction="B"] .cf-order-card__head {
+  padding: var(--cf-space-3) var(--cf-space-5); background: var(--cf-b-panel-head-bg);
+  border-bottom: var(--cf-border-width-hairline) solid var(--cf-color-border-default);
+}
+[data-direction="B"] .cf-inquiry-card__body,
+[data-direction="B"] .cf-order-card__item { padding: var(--cf-space-5); }
+[data-direction="B"] .cf-inquiry-card__note { padding: 0 var(--cf-space-5) var(--cf-space-5); color: var(--cf-color-text-secondary); font-size: var(--cf-font-size-body-sm); }
+[data-direction="B"] .cf-inquiry-card__actions,
+[data-direction="B"] .cf-order-card__actions {
+  padding: var(--cf-space-3) var(--cf-space-5);
+  border-top: var(--cf-border-width-hairline) solid var(--cf-color-border-default);
+}
+[data-direction="B"] .cf-order-card__state {
+  gap: 0; border-top: var(--cf-border-width-hairline) solid var(--cf-color-border-default);
+}
+[data-direction="B"] .cf-order-card__cell { display: grid; gap: var(--cf-space-1); padding: var(--cf-space-4) var(--cf-space-5); }
+[data-direction="B"] .cf-order-card__cell[data-mc-part="woo-status"] { border-left: var(--cf-border-width-hairline) solid var(--cf-color-border-default); }
+[data-direction="B"] .cf-order-card__total { padding: var(--cf-space-4) var(--cf-space-5); border-top: var(--cf-border-width-hairline) solid var(--cf-color-border-default); }
+[data-direction="B"] .cf-order-card__amount { font-size: var(--cf-font-size-body-lg); }
+
+/* 事件：时间线行，与消息头像列对齐 */
+[data-direction="B"] .cf-event { padding: var(--cf-space-2) 0; }
+[data-direction="B"] .cf-event__icon {
+  width: var(--cf-size-avatar); height: var(--cf-size-avatar); align-items: center; justify-content: center;
+  border: var(--cf-border-width-hairline) solid var(--cf-color-border-default); border-radius: var(--cf-radius-pill); background: var(--cf-color-bg-surface);
+}
+[data-direction="B"] .cf-event__main { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--cf-space-4); }
+[data-direction="B"] .cf-preview__stack .cf-event { border-bottom: var(--cf-border-width-hairline) solid var(--cf-color-border-default); padding-bottom: var(--cf-space-4); }
+
+/* 窄屏：侧栏落到底部 */
+@container widget (max-width: 48rem) {
+  [data-direction="B"] .cf-widget__layout { flex-direction: column; }
+  [data-direction="B"] .cf-context { width: auto; border-left: 0; border-top: var(--cf-border-width-hairline) solid var(--cf-color-border-default); }
+}

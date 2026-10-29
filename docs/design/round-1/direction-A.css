@@ -1,0 +1,56 @@
+/* 方向 A · 货架 IM（手机淘宝 IM 式）。方向级覆盖全部写成 --cf-a-* 变量，值仍引用全局 token。 */
+[data-direction="A"] {
+  --cf-a-thread-bg: var(--cf-color-bg-muted);
+  --cf-a-card-bg: var(--cf-color-card-bg);
+  --cf-a-card-radius: var(--cf-radius-lg);
+  --cf-a-card-pad: var(--cf-space-5);
+  --cf-a-bubble-radius: var(--cf-radius-lg);
+  --cf-a-tag-radius: var(--cf-radius-xs);
+}
+[data-direction="A"][data-theme="dark"] { --cf-a-thread-bg: var(--cf-color-bg-canvas); }
+
+/* 对话：灰底 + 白气泡 / 浅蓝气泡；我方靠右；1:1 不显示名字 */
+[data-direction="A"] .cf-thread { background: var(--cf-a-thread-bg); }
+[data-direction="A"] .cf-msg--mine { flex-direction: row-reverse; }
+[data-direction="A"] .cf-msg--mine .cf-msg__main { align-items: flex-end; }
+[data-direction="A"] .cf-msg__name { display: none; }
+[data-direction="A"] .cf-msg__meta { padding: 0 var(--cf-space-2); }
+[data-direction="A"] .cf-bubble { padding: var(--cf-space-4) var(--cf-space-5); border-radius: var(--cf-a-bubble-radius); background: var(--cf-color-bubble-theirs-bg); color: var(--cf-color-bubble-theirs-text); }
+[data-direction="A"] .cf-msg--mine .cf-bubble { background: var(--cf-color-bubble-mine-bg); color: var(--cf-color-bubble-mine-text); }
+
+/* 卡片：白底、细边、--cf-radius-lg 圆角、无阴影；三段之间留白而非色条 */
+[data-direction="A"] .cf-card {
+  gap: var(--cf-space-4); padding: var(--cf-a-card-pad); background: var(--cf-a-card-bg);
+  border: var(--cf-border-width-hairline) solid var(--cf-color-card-border); border-radius: var(--cf-a-card-radius);
+}
+[data-direction="A"] .cf-card__actions { padding-top: var(--cf-space-4); border-top: var(--cf-border-width-hairline) solid var(--cf-color-border-default); }
+[data-direction="A"] .cf-inquiry-card__price { font-size: var(--cf-font-size-title-sm); }
+[data-direction="A"] .cf-msg .cf-card { width: 17.5rem; max-width: 100%; }
+
+/* 状态：浅底深字小标签（五档），不用胶囊、不用实心彩底 */
+[data-direction="A"] .cf-status { padding: 0 var(--cf-space-3); border-radius: var(--cf-a-tag-radius); background: var(--cf-color-neutral-bg); color: var(--cf-color-neutral-fg); }
+[data-direction="A"] .cf-status__dot { display: none; }
+[data-direction="A"] .cf-status[data-mc-tone="info"] { background: var(--cf-color-info-bg); color: var(--cf-color-info-fg); }
+[data-direction="A"] .cf-status[data-mc-tone="success"] { background: var(--cf-color-success-bg); color: var(--cf-color-success-fg); }
+[data-direction="A"] .cf-status[data-mc-tone="warning"] { background: var(--cf-color-warning-bg); color: var(--cf-color-warning-fg); }
+[data-direction="A"] .cf-status[data-mc-tone="danger"] { background: var(--cf-color-danger-bg); color: var(--cf-color-danger-fg); }
+
+/* 芯片条：芯片是白底细边小块；当前商品相关单描边蓝 */
+[data-direction="A"] .cf-order-chip { border-radius: var(--cf-radius-sm); }
+
+/* PM：流内卡片同挂件；事件行放在灰底小区 */
+[data-direction="A"] .cf-pm__events { background: var(--cf-color-bg-subtle); margin: var(--cf-space-4) 0; border-radius: var(--cf-radius-md); border-bottom: 0; }
+
+@container widget (max-width: 30rem) {
+  [data-direction="A"] .cf-msg__avatar { display: none; }
+  [data-direction="A"] .cf-msg__main { max-width: 86%; }
+}
+
+/* BATCH2-START · 第二批：订单行、子页面、商家三栏 */
+[data-direction="A"] .cf-order-row { border-radius: var(--cf-a-card-radius); }
+[data-direction="A"] .cf-order-row--compact { border-radius: var(--cf-radius-md); }
+[data-direction="A"] .cf-page { background: var(--cf-a-thread-bg); }
+[data-direction="A"] .cf-mc .cf-pm__events { margin: var(--cf-space-4) 0; }
+
+/* BATCH3-START · S2：卡面与会话底拉开（暗色 card-bg 对 bg-canvas ≥1.25，边框 card-border），不加阴影 */
+[data-direction="A"] .cf-order-row, [data-direction="A"] .cf-page__section { background: var(--cf-a-card-bg); border-color: var(--cf-color-card-border); }

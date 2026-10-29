@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-direction="A" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cyberforums 商务界面 · 设计 round-1 总览</title>
+<script>if (new URLSearchParams(location.search).get("theme") === "dark") document.documentElement.setAttribute("data-theme", "dark");</script>
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="preview.css" />
+<link rel="stylesheet" href="base.css" />
+</head>
+<body class="cf-preview">
+<header class="cf-preview__bar">
+  <div class="cf-preview__intro">
+    <p class="cf-preview__kicker">cf-design · round-1 · 2026-10-30 · 第二批</p>
+    <h1 class="cf-preview__title">Cyberforums 商务界面设计方向</h1>
+    <p class="cf-preview__desc">方向 A（货架 IM）：① 咨询商品 ② 订单售后 ③ 售前留资 ④ 商家三栏，以及「我的订单 / 订单详情 / 售后」子页面。全部为示例数据；样式只引用 tokens.css；钩子统一为 data-mc-*。</p>
+  </div>
+  <div class="cf-preview__tools"><span class="cf-preview__sample">示例数据</span></div>
+</header>
+<main class="cf-preview__stage" data-viewport="desktop">
+  <section class="cf-preview__section">
+    <h2 class="cf-preview__h">入口 → 页面导航图</h2>
+    <table class="cf-preview__map">
+      <thead><tr><th scope="col">入口</th><th scope="col">thread_kind / 版式</th><th scope="col">首屏</th><th scope="col">从首屏能去哪</th><th scope="col">预览</th></tr></thead>
+      <tbody>
+        <tr><td>商品页「咨询商家」</td><td><code>data-mc-thread="inquiry"</code></td><td>① 咨询商品（商品条 + 询商卡）</td><td>「查看商品」→ 商品页</td><td><a class="cf-link" href="direction-A.html?screen=inquiry&amp;vp=mobile">亮</a> · <a class="cf-link" href="direction-A.html?screen=inquiry&amp;vp=mobile&amp;theme=dark">暗</a></td></tr>
+        <tr><td>我的账户 / 订单页「联系商家」（已登录）</td><td><code>data-mc-thread="order"</code></td><td>② 订单售后（芯片条 + 订单卡）</td><td>芯片条「全部」→ 我的订单 → 订单详情；订单卡上的「查看订单 / 申请退款 / 去支付」→ Woo</td><td><a class="cf-link" href="direction-A.html?screen=aftersales&amp;vp=mobile">亮</a> · <a class="cf-link" href="direction-A.html?screen=aftersales&amp;vp=mobile&amp;theme=dark">暗</a></td></tr>
+        <tr><td>② 中发生 escalate，或订单变成 refunded / cancelled / failed</td><td><code>data-mc-thread="aftersale"</code></td><td>同一串会话</td><td>售后子页；「申请退款」→ Woo</td><td><a class="cf-link" href="direction-A.html?screen=aftersale-page&amp;vp=mobile">亮</a> · <a class="cf-link" href="direction-A.html?screen=aftersale-page&amp;vp=mobile&amp;theme=dark">暗</a></td></tr>
+        <tr><td>站点悬浮钮（无商品、无订单）</td><td><code>data-mc-thread="presales"</code></td><td>③ 售前留资</td><td>留资成功后继续对话</td><td><a class="cf-link" href="direction-A.html?screen=presales&amp;vp=mobile">亮</a> · <a class="cf-link" href="direction-A.html?screen=presales&amp;vp=mobile&amp;theme=dark">暗</a> · <a class="cf-link" href="direction-A.html?screen=presales-states">全部状态</a></td></tr>
+        <tr><td>商家：Discourse 论坛 PM 收件箱</td><td><code>data-mc-topic="inquiry|order|aftersale"</code></td><td>④ 商家三栏</td><td>右栏「在 Woo 后台查看」→ Woo；窄屏侧栏折叠</td><td><a class="cf-link" href="direction-A.html?screen=merchant-inquiry">询商</a> · <a class="cf-link" href="direction-A.html?screen=merchant-order">订单</a> · <a class="cf-link" href="direction-A.html?screen=merchant-aftersale">售后</a>（加 <code>&amp;theme=dark</code> 看暗色）</td></tr>
+        <tr><td>挂件内「我的订单」</td><td><code>data-mc-page="my-orders|order-detail"</code></td><td>子页</td><td>订单行操作 → Woo</td><td><a class="cf-link" href="direction-A.html?screen=my-orders&amp;vp=mobile">我的订单</a> · <a class="cf-link" href="direction-A.html?screen=order-detail&amp;vp=mobile">订单详情</a></td></tr>
+        <tr><td>WP 收件箱</td><td>—</td><td>已冻结，不画</td><td>—</td><td>—</td></tr>
+        <tr><td>论坛帖子</td><td><code>data-mc-topic="qa|product|discussion"</code></td><td>问答帖 / 商品发布帖 / 普通讨论帖</td><td>商品卡「咨询商家」→ ① 咨询；「查看商品」→ Woo</td><td><a class="cf-link" href="direction-A.html?screen=post-qa">问答</a> · <a class="cf-link" href="direction-A.html?screen=post-product">商品发布</a> · <a class="cf-link" href="direction-A.html?screen=post-discussion">讨论</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="cf-preview__section">
+    <h2 class="cf-preview__h">完整预览与边缘态</h2>
+    <p class="cf-preview__statuses">
+      <a class="cf-link" href="direction-A.html">direction-A.html（全部页面）</a>
+      <a class="cf-link" href="direction-A.html?screen=parts">组件与边缘态（一）</a>
+      <a class="cf-link" href="direction-A.html?screen=parts2">组件与边缘态（二）</a> · <a class="cf-link" href="direction-A.html?screen=parts3">帖子组件</a>
+    </p>
+  </section>
+  <section class="cf-preview__section">
+    <h2 class="cf-preview__h">方向 B · 服务台 / 方向 C · 单据（下一轮）</h2>
+    <p class="cf-preview__desc">B：Intercom / Zendesk 式平铺消息 + 右侧上下文栏；C：R1+R3 小票短笺的去 AI 味版本。样式草稿在 _wip/，本批不评审。</p>
+  </section>
+  <section class="cf-preview__section">
+    <h2 class="cf-preview__h">截图（screenshots/）</h2>
+    <p class="cf-preview__desc">挂件 6 页与帖子 3 种，四套齐：A-{inquiry, aftersales, presales, my-orders, order-detail, aftersale-page, post-qa, post-product, post-discussion}-{mobile, desktop}-{light, dark}.png；商家：A-merchant-{inquiry, order, aftersale}-desktop-{light, dark}.png、A-merchant-narrow-{1024, 700}-{light, dark}.png；状态：A-{presales-states, parts, parts2, parts3}-desktop-{light, dark}.png。共 54 张。</p>
+  </section>
+</main>
+</body>
+</html>

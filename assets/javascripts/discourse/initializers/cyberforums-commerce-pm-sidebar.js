@@ -41,19 +41,49 @@ function renderAside(ctx) {
   }
   const orders = Array.isArray(ctx.orders) ? ctx.orders : [];
   if (orders.length) {
+    const badgeToken = (status) => {
+      const s = String(status || "")
+        .trim()
+        .toLowerCase()
+        .replace(/^wc-/, "");
+      const map = {
+        pending: "pending",
+        processing: "processing",
+        "on-hold": "hold",
+        completed: "done",
+        cancelled: "cancel",
+        refunded: "refund",
+        failed: "fail",
+        "checkout-draft": "draft",
+      };
+      return map[s] || "muted";
+    };
     const rows = orders
       .slice(0, 5)
       .map((o) => {
-        const label = `#${esc(o.number || o.id)}${
-          o.status ? " · " + esc(o.status) : ""
-        }${
-          o.total
-            ? " · " +
-              (o.currency ? esc(o.currency) + " " : "") +
-              esc(o.total)
-            : ""
-        }`;
-        return `<div class="mc-commerce__order">${label}</div>`;
+        const labelText = o.status_label || o.status || "—";
+        const badge = `<span class="mc-badge mc-badge--${esc(
+          badgeToken(o.status)
+        )}">${esc(labelText)}</span>`;
+        const bits = [`#${esc(o.number || o.id)}`];
+        if (o.total) {
+          bits.push(
+            (o.currency ? esc(o.currency) + " " : "") + esc(o.total)
+          );
+        }
+        let view = "";
+        const url = o.view_url || o.permalink || "";
+        if (
+          /^https?:\/\//i.test(url) &&
+          !/localhost|127\.0\.0\.1|\[::1\]/i.test(url)
+        ) {
+          view = ` <a class="mc-commerce__link" href="${esc(
+            url
+          )}" target="_blank" rel="noopener">查看</a>`;
+        }
+        return `<div class="mc-commerce__order">${badge} ${bits.join(
+          " · "
+        )}${view}</div>`;
       })
       .join("");
     kids.push(

@@ -56,3 +56,141 @@
 .mc-commerce__link {
   color: var(--tertiary);
 }
+
+.mc-commerce__order {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.4rem;
+}
+
+.mc-badge {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0.08rem 0.4rem;
+  border-radius: 999px;
+  font-size: var(--font-down-2);
+  font-weight: 600;
+  line-height: 1.35;
+  background: var(--primary-very-low);
+  color: var(--primary-medium);
+}
+
+.mc-badge--pending {
+  background: rgba(196, 122, 26, 0.16);
+  color: #8a5408;
+}
+
+.mc-badge--processing {
+  background: rgba(47, 111, 237, 0.14);
+  color: #1d4fbf;
+}
+
+.mc-badge--hold {
+  background: rgba(122, 106, 79, 0.16);
+  color: #5c4e36;
+}
+
+.mc-badge--done {
+  background: rgba(31, 138, 76, 0.14);
+  color: #146338;
+}
+
+.mc-badge--cancel,
+.mc-badge--fail,
+.mc-badge--refund {
+  background: rgba(194, 59, 46, 0.14);
+  color: #9a2a20;
+}
+
+.mc-badge--draft,
+.mc-badge--muted {
+  background: var(--primary-very-low);
+  color: var(--primary-medium);
+}
+
+/* H1c: system order / paid / status cards inside cooked posts */
+.cooked .mc-sys-card,
+.mc-sys-card {
+  margin: 0.35rem 0;
+  padding: 0.7rem 0.85rem 0.55rem;
+  border: 1px solid var(--primary-low);
+  border-radius: 10px;
+  background: var(--secondary);
+  max-width: 28rem;
+}
+
+.cooked .mc-sys-card--card,
+.mc-sys-card--card {
+  border-top: 2px solid rgba(47, 111, 237, 0.55);
+}
+
+.cooked .mc-sys-card--paid,
+.mc-sys-card--paid {
+  border-top: 2px solid rgba(31, 138, 76, 0.65);
+  background: rgba(31, 138, 76, 0.06);
+}
+
+.cooked .mc-sys-card--status,
+.mc-sys-card--status {
+  border-top: 2px solid rgba(196, 122, 26, 0.55);
+}
+
+.mc-sys-card__head {
+  font-weight: 650;
+  font-size: var(--font-down-1);
+  margin: 0 0 0.45rem;
+}
+
+.mc-sys-card__body {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.mc-sys-card__row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.35rem;
+  font-size: var(--font-down-1);
+  line-height: 1.4;
+}
+
+.mc-sys-card__k {
+  color: var(--primary-medium);
+}
+
+.mc-sys-card__v {
+  color: var(--primary);
+  word-break: break-word;
+}
+
+.mc-sys-card__code {
+  margin-left: 0.35rem;
+  font-size: var(--font-down-2);
+  color: var(--primary-medium);
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.mc-sys-card__actions {
+  margin-top: 0.55rem;
+}
+
+.mc-sys-card__btn {
+  display: inline-block;
+  padding: 0.28rem 0.7rem;
+  border-radius: 6px;
+  background: var(--primary);
+  color: var(--secondary) !important;
+  text-decoration: none !important;
+  font-size: var(--font-down-1);
+  font-weight: 600;
+}
+
+.mc-sys-card__foot {
+  margin: 0.5rem 0 0;
+  font-size: var(--font-down-2);
+  color: var(--primary-medium);
+  line-height: 1.35;
+}

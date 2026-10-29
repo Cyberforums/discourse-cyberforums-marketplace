@@ -87,10 +87,6 @@ function renderAside(ctx) {
 }
 
 function mountPanel(html) {
-  const host = document.querySelector(".topic-above-posts");
-  if (!host) {
-    return;
-  }
   const old = document.getElementById(PANEL_ID);
   if (old) {
     old.remove();
@@ -98,13 +94,23 @@ function mountPanel(html) {
   if (!html) {
     return;
   }
+  // Discourse PM layouts vary; prefer title area then posts container.
+  const title = document.querySelector("#topic-title, .title-wrapper");
+  const above = document.querySelector(".topic-above-posts");
+  const posts = document.querySelector(".container.posts, .post-stream");
   const wrap = document.createElement("div");
   wrap.innerHTML = html;
   const node = wrap.firstElementChild;
   if (!node) {
     return;
   }
-  host.insertBefore(node, host.firstChild);
+  if (above) {
+    above.insertBefore(node, above.firstChild);
+  } else if (title && title.parentNode) {
+    title.parentNode.insertBefore(node, title.nextSibling);
+  } else if (posts) {
+    posts.insertBefore(node, posts.firstChild);
+  }
 }
 
 export default apiInitializer("1.8.0", (api) => {

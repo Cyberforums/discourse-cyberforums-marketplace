@@ -12,12 +12,13 @@ function esc(s) {
 
 function renderAside(ctx) {
   const kids = [];
-  if (ctx.buyer?.display_name) {
-    const u = ctx.buyer.discourse_username
-      ? ` · @${esc(ctx.buyer.discourse_username)}`
+  const buyer = ctx.buyer || {};
+  if (buyer.display_name) {
+    const u = buyer.discourse_username
+      ? ` · @${esc(buyer.discourse_username)}`
       : "";
     kids.push(
-      `<div class="mc-commerce__buyer">${esc(ctx.buyer.display_name)}${u}</div>`
+      `<div class="mc-commerce__buyer">${esc(buyer.display_name)}${u}</div>`
     );
   }
   const p = ctx.product;
@@ -94,7 +95,6 @@ function mountPanel(html) {
   if (!html) {
     return;
   }
-  // Discourse PM layouts vary; prefer title area then posts container.
   const title = document.querySelector("#topic-title, .title-wrapper");
   const above = document.querySelector(".topic-above-posts");
   const posts = document.querySelector(".container.posts, .post-stream");
@@ -113,38 +113,64 @@ function mountPanel(html) {
   }
 }
 
+function siteSettingsEnabled(api) {
+  let siteSettings = null;
+  try {
+    siteSettings = api.container.lookup("service:site-settings");
+  } catch (e) {
+    siteSettings = null;
+  }
+  if (!siteSettings) {
+    try {
+      siteSettings = api.container.lookup("site-settings:main");
+    } catch (e) {
+      siteSettings = null;
+    }
+  }
+  return !!(
+    siteSettings &&
+    siteSettings.cyberforums_marketplace_pm_commerce_sidebar_enabled
+  );
+}
+
 export default apiInitializer("1.8.0", (api) => {
   api.onPageChange(() => {
-    // Plugin JS has no theme `settings` global — read SiteSetting via container.
-    const siteSettings =
-      api.container.lookup("service:site-settings") ||
-      api.container.lookup("site-settings:main");
-    if (!siteSettings?.cyberforums_marketplace_pm_commerce_sidebar_enabled) {
-      mountPanel("");
-      return;
-    }
-    const topic = api.container.lookup("controller:topic")?.model;
-    if (!topic || !topic.get("isPrivateMessage")) {
-      mountPanel("");
-      return;
-    }
-    const topicId = topic.get("id");
-    if (!topicId) {
-      return;
-    }
+    try {
+      if (!siteSettingsEnabled(api)) {
+        mountPanel("");
+        return;
+      }
+      const topicCtrl = api.container.lookup("controller:topic");
+      const topic = topicCtrl && topicCtrl.model;
+      if (!topic || !topic.get("isPrivateMessage")) {
+        mountPanel("");
+        return;
+      }
+      const topicId = topic.get("id");
+      if (!topicId) {
+        return;
+      }
 
-    fetch(`/marketplace/topics/${topicId}/commerce-context.json`, {
-      credentials: "same-origin",
-      headers: { Accept: "application/json" },
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((ctx) => {
-        if (!ctx || !ctx.ok) {
-          mountPanel("");
-          return;
-        }
-        mountPanel(renderAside(ctx));
+      fetch(`/marketplace/topics/${topicId}/commerce-context.json`, {
+        credentials: "same-origin",
+        headers: { Accept: "application/json" },
       })
-      .catch(() => mountPanel(""));
+        .then((r) => (r.ok ? r.json() : null))
+        .then((ctx) => {
+          if (!ctx || !ctx.ok) {
+            mountPanel("");
+            return;
+          }
+          mountPanel(renderAside(ctx));
+        })
+        .catch(() => mountPanel(""));
+    } catch (e) {
+      // Never surface admin onPageChange banner for commerce sidebar.
+      try {
+        mountPanel("");
+      } catch (e2) {
+        /* ignore */
+      }
+    }
   });
 });

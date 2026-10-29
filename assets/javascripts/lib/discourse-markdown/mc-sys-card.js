@@ -5,6 +5,7 @@
  *   Discourse allowList 的条目是「标签[属性=值]」成对写的，不支持通配，所以这里展开成组合。
  * - 标签只用 div / span / a / img / p / time（img 由 Discourse 默认规则放行，不挂 data-mc-*）。
  * - class、role、aria-*、svg 都不进 cooked：class 和 aria/role 由 decorate JS 按 data-mc-* 补回。
+ * - 例外：文件末尾 LEGACY_ALLOW_0_3 是 0.4.x 过渡期保留的旧 class 条目，下一版删除。
  * - JS 外壳才用的 data-mc-page / quick / side / stock / surface / thread / topic 不在这里。
  */
 
@@ -94,6 +95,46 @@ export function buildMcAllowList() {
   return list;
 }
 
+// ---------------------------------------------------------------------------
+// 0.4.x 过渡兼容：origin/main 0acc955 白名单的旧条目原样保留，
+// 让旧 BFF 输出的 div[data-mc-event] 系统卡在过渡期内 cook 后仍带 class / data-mc-*。
+// 旧帖不 rebake。下一个版本（0.5.0）删掉 LEGACY_ALLOW_0_3 整段。
+// ---------------------------------------------------------------------------
+export const LEGACY_ALLOW_0_3 = [
+  "div.mc-sys-card",
+  "div.mc-sys-card--card",
+  "div.mc-sys-card--paid",
+  "div.mc-sys-card--status",
+  "div.mc-sys-card--inquire",
+  "div.mc-sys-card--product",
+  "div.mc-sys-card__head",
+  "div.mc-sys-card__body",
+  "div.mc-sys-card__row",
+  "div.mc-sys-card__media",
+  "div.mc-sys-card__actions",
+  "span.mc-sys-card__k",
+  "span.mc-sys-card__v",
+  "code.mc-sys-card__code",
+  "a.mc-sys-card__btn",
+  "p.mc-sys-card__foot",
+  "p.mc-inquire-body",
+  "img.mc-sys-card__img",
+  "img[loading=lazy]",
+  "span.mc-badge",
+  "span.mc-badge--pending",
+  "span.mc-badge--processing",
+  "span.mc-badge--hold",
+  "span.mc-badge--done",
+  "span.mc-badge--cancel",
+  "span.mc-badge--fail",
+  "span.mc-badge--refund",
+  "span.mc-badge--draft",
+  "span.mc-badge--muted",
+  "div[data-mc-event]",
+  "div[data-mc-order]",
+  "div[data-mc-status]",
+];
+
 export function setup(helper) {
-  helper.allowList(buildMcAllowList());
+  helper.allowList(buildMcAllowList().concat(LEGACY_ALLOW_0_3));
 }

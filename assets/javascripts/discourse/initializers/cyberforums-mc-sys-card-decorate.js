@@ -44,18 +44,33 @@ function decorateMcSysCards(element) {
     const body = kids[i];
     if (body && body.tagName === "DIV") {
       body.classList.add("mc-sys-card__body");
-      body.querySelectorAll(":scope > div").forEach((row) => {
-        row.classList.add("mc-sys-card__row");
-        const spans = row.querySelectorAll(":scope > span");
-        if (spans[0]) {
-          spans[0].classList.add("mc-sys-card__k");
+      if (ev === "inquire") {
+        const parts = body.querySelectorAll(":scope > div");
+        if (parts[0]) {
+          parts[0].classList.add("mc-sys-card__sub");
         }
-        if (spans[1]) {
-          spans[1].classList.add("mc-sys-card__v");
+        if (parts[1]) {
+          parts[1].classList.add("mc-sys-card__salute");
         }
-        row.querySelectorAll("code").forEach((c) => c.classList.add("mc-sys-card__code"));
-        row.querySelectorAll("span.mc-badge, span[class*='mc-badge']");
-      });
+        if (parts[2]) {
+          parts[2].classList.add("mc-sys-card__prose");
+        }
+        if (parts[3]) {
+          parts[3].classList.add("mc-sys-card__facts");
+        }
+      } else {
+        body.querySelectorAll(":scope > div").forEach((row) => {
+          row.classList.add("mc-sys-card__row");
+          const spans = row.querySelectorAll(":scope > span");
+          if (spans[0]) {
+            spans[0].classList.add("mc-sys-card__k");
+          }
+          if (spans[1]) {
+            spans[1].classList.add("mc-sys-card__v");
+          }
+          row.querySelectorAll("code").forEach((c) => c.classList.add("mc-sys-card__code"));
+        });
+      }
       i += 1;
     }
     const maybeActions = kids[i];
@@ -72,9 +87,28 @@ function decorateMcSysCards(element) {
   });
 }
 
+function syncCommercePmFlag() {
+  const has = !!document.querySelector(
+    ".cooked [data-mc-event], .d-editor-preview [data-mc-event]"
+  );
+  document.documentElement.classList.toggle("mc-commerce-pm", has);
+}
+
 export default apiInitializer("1.8.0", (api) => {
-  api.decorateCookedElement(decorateMcSysCards, {
-    id: "cyberforums-mc-sys-card",
-    onlyStream: false,
+  api.decorateCookedElement(
+    (element) => {
+      decorateMcSysCards(element);
+      syncCommercePmFlag();
+    },
+    {
+      id: "cyberforums-mc-sys-card",
+      onlyStream: false,
+    }
+  );
+
+  api.onPageChange(() => {
+    // Clear first; decorateCookedElement re-sets when stream paints.
+    document.documentElement.classList.remove("mc-commerce-pm");
+    window.requestAnimationFrame(syncCommercePmFlag);
   });
 });

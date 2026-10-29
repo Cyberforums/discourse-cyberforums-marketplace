@@ -2,7 +2,7 @@
 
 # name: discourse-cyberforums-marketplace
 # about: Cyberforums 商城：以文派集市（WooCommerce + MarketKing）为准镜像店铺组（签名 webhook 接收）、店铺资料字段、给聊天中转服务的只读店铺清单、评论访客账号接口
-# version: 0.2.0
+# version: 0.2.1
 # authors: 白泽 (wenpai)
 # url: https://feicode.com/FeiCode/discourse-cyberforums-marketplace
 # required_version: 3.4.0

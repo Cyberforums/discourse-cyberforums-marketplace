@@ -205,8 +205,26 @@ module ::CyberforumsMarketplace
         user = match_user(data[:email])
         if user
           gu = group.group_users.find_by(user_id: user.id)
-          group.add_owner(user) unless gu&.owner
-          owner = gu&.owner ? "already_owner" : "added"
+          if gu&.owner
+            owner = "already_owner"
+          else
+            # Owner change: the new owner is added, previous owners are kept
+            # and the shop is flagged for manual review by an admin.
+            previous =
+              group
+                .group_users
+                .where(owner: true)
+                .where.not(user_id: user.id)
+                .includes(:user)
+                .filter_map { |g| g.user&.username }
+            group.add_owner(user)
+            owner = "added"
+            if previous.any?
+              owner = "added_previous_kept"
+              cf["mc_owner_review"] = true
+              cf["mc_owner_review_previous"] = previous.join(",").slice(0, 500)
+            end
+          end
           cf["mc_owner_pending"] = false
           cf["mc_owner_email_masked"] = nil
         else

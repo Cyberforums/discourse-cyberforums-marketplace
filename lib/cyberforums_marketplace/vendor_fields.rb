@@ -24,6 +24,8 @@ module ::CyberforumsMarketplace
       "mc_wc_synced_at" => :string,
       "mc_owner_pending" => :boolean,
       "mc_owner_email_masked" => :string,
+      "mc_owner_review" => :boolean,
+      "mc_owner_review_previous" => :string,
     }.freeze
 
     ADMIN_EDITABLE = %w[
@@ -33,6 +35,7 @@ module ::CyberforumsMarketplace
       mc_rate_limit
       mc_brand
       mc_product_hint
+      mc_owner_review
     ].freeze
 
     STATUS_ACTIVE = "active"
@@ -85,6 +88,7 @@ module ::CyberforumsMarketplace
     def self.notices_for(group)
       out = []
       out << "owner_pending" if truthy?(group.custom_fields["mc_owner_pending"])
+      out << "owner_changed_review" if truthy?(group.custom_fields["mc_owner_review"])
       slug = group.custom_fields["mc_wc_store_slug"].to_s
       out << "store_slug_changed" if slug.present? && slug != vendor_id_for(group)
       out
@@ -113,6 +117,8 @@ module ::CyberforumsMarketplace
         wc_synced_at: group.custom_fields["mc_wc_synced_at"].to_s.presence,
         owner_pending: truthy?(group.custom_fields["mc_owner_pending"]),
         owner_email_masked: group.custom_fields["mc_owner_email_masked"].to_s.presence,
+        owner_review: truthy?(group.custom_fields["mc_owner_review"]),
+        owner_review_previous: group.custom_fields["mc_owner_review_previous"].to_s.presence,
         problems: problems,
         notices: notices_for(group),
       }

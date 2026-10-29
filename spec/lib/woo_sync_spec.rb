@@ -114,6 +114,30 @@ RSpec.describe CyberforumsMarketplace::WooSync do
       expect(group.custom_fields["mc_owner_pending"]).to eq(false)
     end
 
+    it "keeps the previous owner and flags the shop for manual review when the owner changes" do
+      described_class.apply!(payload)
+      newcomer = Fabricate(:user, email: "next@example.com")
+      result = described_class.apply!(payload({ at: t0 + 60 }, "email" => "next@example.com"))
+      expect(result[:owner]).to eq("added_previous_kept")
+      group = Group.find_by(name: "shop-acme")
+      expect(group.group_users.find_by(user_id: merchant.id).owner).to eq(true)
+      expect(group.group_users.find_by(user_id: newcomer.id).owner).to eq(true)
+      expect(group.custom_fields["mc_owner_review"]).to eq(true)
+      expect(group.custom_fields["mc_owner_review_previous"]).to eq(merchant.username)
+      expect(CyberforumsMarketplace::VendorFields.notices_for(group)).to include(
+        "owner_changed_review",
+      )
+      log = UserHistory.where(custom_type: CyberforumsMarketplace::WooSync::LOG_TYPE).last
+      expect(log.details).to include("added_previous_kept")
+    end
+
+    it "does not flag a review when the first owner is added to an adopted group" do
+      pilot = Fabricate(:group, name: "shop-demo-wenpai")
+      pilot.add(helper_user)
+      described_class.apply!(payload({}, "store_slug" => "demo-wenpai"))
+      expect(pilot.reload.custom_fields["mc_owner_review"]).to be_blank
+    end
+
     it "adopts an existing unsynced shop group (pilot shop) without touching its settings or members" do
       pilot = Fabricate(:group, name: "shop-demo-wenpai", messageable_level: 99)
       pilot.add(helper_user)

@@ -25,3 +25,30 @@ plugins:
   cyberforums_marketplace_woo_webhook_source:
     default: ""
     client: false
+  cyberforums_marketplace_sla_reminders_enabled:
+    default: false
+    client: false
+  cyberforums_marketplace_sla_reminder_hour:
+    default: 9
+    type: integer
+    min: 0
+    max: 23
+    client: false
+  cyberforums_marketplace_stale_enabled:
+    default: false
+    client: false
+  cyberforums_marketplace_stale_idle_days:
+    default: 14
+    type: integer
+    min: 1
+    max: 365
+    client: false
+  cyberforums_marketplace_stale_hour:
+    default: 4
+    type: integer
+    min: 0
+    max: 23
+    client: false
+  cyberforums_marketplace_stale_tag:
+    default: "闲置"
+    client: false

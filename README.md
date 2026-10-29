@@ -18,6 +18,8 @@ Cyberforums 商城的论坛插件。设计见 linuxjoy `docs/plans/2026-10-28-ma
 - 店铺组创建时自动套用店铺组预设（只组员可见、组员/版主/管理员可发私信、新成员默认关注、关闭自由加入），并把组 id 加到 `pm_tags_allowed_for_groups`。被收编的同名旧组不覆盖其已有设置。
 - 店铺资料存为群组自定义字段。同步字段（`mc_source`、`mc_status`、`mc_wp_store_id`、`mc_wc_store_slug`、`mc_wc_synced_at`、`mc_display_name`、`mc_owner_pending`、`mc_owner_email_masked`、`mc_owner_review_previous`）只读；管理员可编辑：`mc_enabled`、`mc_sla_hours`、`mc_order_sla_hours`、`mc_rate_limit`、`mc_brand`、`mc_product_hint`、`mc_owner_review`。新同步的店铺聊天默认关（`mc_enabled`）。
 - `GET /marketplace/vendors.json`（仅管理员）：店铺清单，默认隐藏停用店铺（`include_disabled=1` 显示），并带 `woo` 同步状态（最后接收/对账时间，超过 36 小时未对账提示）。
+- **每店超时提醒（0.3.0，默认关）**：每小时检查一次，到北京时间 `cyberforums_marketplace_sla_reminder_hour` 点后每店每天发一次。按店铺资料 `mc_sla_hours`（未填 24）找出买家等待超时的店铺私信，以 system 私信给该店铺组；没有超时不发；停用店铺跳过。判断规则与原数据查询 2 相同（本店成员=商家；【平台介入】/会话合并/会话闲置/超时提醒、discobot、其他管理人员=中立；其余含 system 代发=买家）。提醒话题本身带 `mc_internal` 标记，不会被再次统计。用来取代“每开一个店克隆一份”的数据查询 2 + 自动化 20。
+- **会话闲置（0.3.0，默认关）**：每天一次（`cyberforums_marketplace_stale_hour`，北京时间），店铺私信超过 `cyberforums_marketplace_stale_idle_days`（14）天没有新帖 → 加标签 `cyberforums_marketplace_stale_tag`（`闲置`）并发一条“【会话闲置】”说明；之后有新帖（说明帖本身除外）自动去掉标签。已关闭/归档/内部话题跳过。用来取代 hk-forum `/etc/cron.d/marketplace-chat-stale` → 中转服务 `stale-tick`。动作写管理日志（`cyberforums_marketplace_threads`）。
 - `POST /marketplace/guests.json`（仅管理员 API 密钥，另需 `cyberforums_marketplace_guest_api_enabled`）：评论访客暂存用户，不改真实会员名字。
 
 ## 站点设置
@@ -27,12 +29,22 @@ Cyberforums 商城的论坛插件。设计见 linuxjoy `docs/plans/2026-10-28-ma
 | `cyberforums_marketplace_woo_webhook_enabled` | 关 | 接收器开关 |
 | `cyberforums_marketplace_woo_webhook_secret` | 空 | 与 Woo webhook 相同的密钥（秘密值，不进仓库/聊天） |
 | `cyberforums_marketplace_woo_webhook_source` | 空 | 可选，Woo 站点 `home_url(/)` |
+| `cyberforums_marketplace_sla_reminders_enabled` | 关 | 每店超时提醒 |
+| `cyberforums_marketplace_sla_reminder_hour` | 9 | 北京时间几点后发 |
+| `cyberforums_marketplace_stale_enabled` | 关 | 会话闲置 |
+| `cyberforums_marketplace_stale_idle_days` | 14 | 几天无新帖算闲置 |
+| `cyberforums_marketplace_stale_hour` | 4 | 北京时间几点后检查 |
+| `cyberforums_marketplace_stale_tag` | 闲置 | 标签名 |
 
 ## 测试
 
 ```bash
 LOAD_PLUGINS=1 bin/rspec plugins/discourse-cyberforums-marketplace/spec
 ```
+
+0.3.0 在 Discourse 2026.10.0（beta，`a4a98d5`，与线上一致）上跑：60 examples, 0 failures；rubocop、stree 无问题。
+
+上线切换（需 Feng 批准）：先开新功能并与旧自动化/定时任务并行一天对比，再停自动化 20、删查询 2、删 `marketplace-chat-stale` 定时任务。
 
 ## 安装
 

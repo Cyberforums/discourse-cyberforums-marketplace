@@ -2,7 +2,7 @@
 
 # name: discourse-cyberforums-marketplace
 # about: Cyberforums 商城：以文派集市（WooCommerce + MarketKing）为准镜像店铺组（签名 webhook 接收）、店铺资料字段、给聊天中转服务的只读店铺清单、评论访客账号接口、每店超时提醒与会话闲置定时任务
-# version: 0.3.1
+# version: 0.3.2
 # authors: 白泽 (wenpai)
 # url: https://feicode.com/FeiCode/discourse-cyberforums-marketplace
 # required_version: 3.4.0
@@ -26,7 +26,7 @@ after_initialize do
   require_relative "app/controllers/cyberforums_marketplace/vendors_controller"
   require_relative "app/controllers/cyberforums_marketplace/guests_controller"
   require_relative "app/controllers/cyberforums_marketplace/woo_webhooks_controller"
-  require_relative "app/controllers/cyberforums_marketplace/commerce_controller"
+  require_relative "app/controllers/cyberforums_marketplace/commerce_controller"  # C4 PM commerce sidebar proxy
 
   register_asset "stylesheets/cyberforums-commerce-pm-sidebar.scss"
 

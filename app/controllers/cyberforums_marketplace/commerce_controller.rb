@@ -14,7 +14,9 @@ module ::CyberforumsMarketplace
       topic = Topic.find_by(id: params[:topic_id].to_i)
       raise Discourse::NotFound if topic.nil? || !topic.private_message?
       raise Discourse::InvalidAccess unless Guardian.new(current_user).can_see?(topic)
-      raise Discourse::NotFound unless ShopThreads.shop_pm?(topic)
+      # Shop-group PMs preferred; marketplace-chat often targets users first then
+      # invites the shop group — still proxy. Unmapped PMs → BFF 404 → empty panel.
+      # (Do not hard-require ShopThreads.shop_pm? here.)
 
       api_base = SiteSetting.cyberforums_marketplace_chat_api_base.to_s.strip.presence ||
         "https://chat.cyberforums.com"

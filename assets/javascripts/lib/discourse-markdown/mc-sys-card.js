@@ -1,0 +1,40 @@
+/**
+ * Allow BFF system / inquire card HTML classes through PrettyText sanitizer.
+ * Without this, Discourse strips class= and cards look like bare text blocks.
+ */
+export function setup(helper) {
+  helper.allowList([
+    "div.mc-sys-card",
+    "div.mc-sys-card--card",
+    "div.mc-sys-card--paid",
+    "div.mc-sys-card--status",
+    "div.mc-sys-card--inquire",
+    "div.mc-sys-card--product",
+    "div.mc-sys-card__head",
+    "div.mc-sys-card__body",
+    "div.mc-sys-card__row",
+    "div.mc-sys-card__media",
+    "div.mc-sys-card__actions",
+    "span.mc-sys-card__k",
+    "span.mc-sys-card__v",
+    "code.mc-sys-card__code",
+    "a.mc-sys-card__btn",
+    "p.mc-sys-card__foot",
+    "p.mc-inquire-body",
+    "img.mc-sys-card__img",
+    "img[loading=lazy]",
+    "span.mc-badge",
+    "span.mc-badge--pending",
+    "span.mc-badge--processing",
+    "span.mc-badge--hold",
+    "span.mc-badge--done",
+    "span.mc-badge--cancel",
+    "span.mc-badge--fail",
+    "span.mc-badge--refund",
+    "span.mc-badge--draft",
+    "span.mc-badge--muted",
+    "div[data-mc-event]",
+    "div[data-mc-order]",
+    "div[data-mc-status]",
+  ]);
+}

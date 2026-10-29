@@ -52,3 +52,13 @@ plugins:
   cyberforums_marketplace_stale_tag:
     default: "闲置"
     client: false
+  cyberforums_marketplace_pm_commerce_sidebar_enabled:
+    default: false
+    client: true
+  cyberforums_marketplace_chat_api_base:
+    default: "https://chat.cyberforums.com"
+    client: false
+  cyberforums_marketplace_chat_proxy_token:
+    default: ""
+    secret: true
+    client: false

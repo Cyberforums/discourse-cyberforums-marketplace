@@ -13,3 +13,6 @@ zh_CN:
     cyberforums_marketplace_stale_idle_days: "超过几天无新消息算闲置"
     cyberforums_marketplace_stale_hour: "闲置检查在北京时间几点后运行（0–23，每天一次）"
     cyberforums_marketplace_stale_tag: "闲置会话使用的标签名"
+    cyberforums_marketplace_pm_commerce_sidebar_enabled: "在店铺私信话题顶部显示商业上下文侧栏（商品/订单只读，走 chat 代理）"
+    cyberforums_marketplace_chat_api_base: "marketplace-chat 公网根地址（如 https://chat.cyberforums.com）"
+    cyberforums_marketplace_chat_proxy_token: "论坛→chat 服务端代理令牌，须与 chat 的 FLUSH_TOKEN 同值（秘密，不进前端）"

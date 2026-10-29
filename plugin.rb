@@ -26,6 +26,9 @@ after_initialize do
   require_relative "app/controllers/cyberforums_marketplace/vendors_controller"
   require_relative "app/controllers/cyberforums_marketplace/guests_controller"
   require_relative "app/controllers/cyberforums_marketplace/woo_webhooks_controller"
+  require_relative "app/controllers/cyberforums_marketplace/commerce_controller"
+
+  register_asset "stylesheets/cyberforums-commerce-pm-sidebar.scss"
 
   CyberforumsMarketplace::VendorFields::TYPES.each do |name, type|
     register_group_custom_field_type(name, type)

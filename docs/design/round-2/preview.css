@@ -1,0 +1,64 @@
+/* 预览页外壳（非组件，不进插件）。同样只用 var(--cf-*)、类名与 data 钩子。 */
+* { box-sizing: border-box; }
+html { background: var(--cf-color-bg-canvas); }
+body.cf-preview {
+  margin: 0; font-family: var(--cf-font-family-ui); font-size: var(--cf-font-size-body);
+  line-height: var(--cf-line-height-normal); color: var(--cf-color-text-primary); background: var(--cf-color-bg-canvas);
+}
+.cf-preview__bar {
+  display: flex; flex-wrap: wrap; gap: var(--cf-space-6); justify-content: space-between; align-items: flex-end;
+  padding: var(--cf-space-8) var(--cf-space-8) var(--cf-space-6);
+  border-bottom: var(--cf-border-width-hairline) solid var(--cf-color-border-default); background: var(--cf-color-bg-surface);
+}
+.cf-preview__kicker, .cf-preview__desc, .cf-preview__cap { margin: 0; color: var(--cf-color-text-secondary); font-size: var(--cf-font-size-body-sm); }
+.cf-preview__title { margin: var(--cf-space-2) 0; font-size: var(--cf-font-size-title-lg); font-weight: var(--cf-font-weight-semibold); line-height: var(--cf-line-height-tight); }
+.cf-preview__desc { max-width: 44rem; }
+.cf-preview__tools { display: flex; gap: var(--cf-space-4); align-items: center; flex-wrap: wrap; }
+.cf-preview__sample {
+  font-size: var(--cf-font-size-caption); color: var(--cf-color-text-secondary);
+  border: var(--cf-border-width-hairline) dashed var(--cf-color-border-input); border-radius: var(--cf-radius-sm); padding: var(--cf-space-1) var(--cf-space-3);
+}
+.cf-preview__stage { container-type: inline-size; container-name: stage; margin: 0 auto; padding: var(--cf-space-8); max-width: 80rem; }
+.cf-preview__stage[data-viewport="mobile"] {
+  max-width: var(--cf-size-mobile-frame); padding: 0;
+  border-left: var(--cf-border-width-hairline) solid var(--cf-color-border-default);
+  border-right: var(--cf-border-width-hairline) solid var(--cf-color-border-default);
+}
+.cf-preview__section { margin: 0 0 var(--cf-space-10); }
+.cf-preview__h { margin: 0 0 var(--cf-space-5); font-size: var(--cf-font-size-title-sm); font-weight: var(--cf-font-weight-semibold); }
+.cf-preview__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr)); gap: var(--cf-space-8); align-items: start; }
+.cf-preview__cell--wide { grid-column: 1 / -1; }
+.cf-preview__cap { margin-bottom: var(--cf-space-4); }
+.cf-preview__frame { border: var(--cf-border-width-hairline) solid var(--cf-color-border-default); background: var(--cf-color-bg-surface); border-radius: var(--cf-radius-md); overflow: hidden; }
+.cf-preview__frame--narrow { max-width: var(--cf-size-mobile-frame); }
+.cf-preview__frame--thread { display: grid; gap: var(--cf-space-3); padding: var(--cf-space-5); background: var(--cf-color-bg-muted); }
+.cf-preview__statuses { display: flex; flex-wrap: wrap; gap: var(--cf-space-3) var(--cf-space-6); margin: 0; }
+.cf-preview__status { display: inline-flex; align-items: center; gap: var(--cf-space-2); }
+.cf-preview__map { width: 100%; border-collapse: collapse; font-size: var(--cf-font-size-body-sm); }
+.cf-preview__map th, .cf-preview__map td { text-align: left; vertical-align: top; padding: var(--cf-space-3) var(--cf-space-4) var(--cf-space-3) 0; border-top: var(--cf-border-width-hairline) solid var(--cf-color-border-default); }
+.cf-preview__map th { font-size: var(--cf-font-size-caption); font-weight: var(--cf-font-weight-semibold); color: var(--cf-color-text-secondary); }
+.cf-preview__map code { font-family: var(--cf-font-family-mono); font-size: var(--cf-font-size-caption); color: var(--cf-color-text-secondary); }
+
+/* 预览里手机全屏会话固定成手机画框（真实环境用 100dvh）；商家三栏给一个桌面高度 */
+.cf-preview__stage[data-viewport="mobile"] .cf-widget { height: var(--cf-size-mobile-frame-h); }
+.cf-preview__stage .cf-mc { height: var(--cf-size-merchant-h); }
+
+/* 截图模式：?screen=<id> 只显示一屏 */
+body[data-screen] .cf-preview__bar, body[data-screen] .cf-preview__section { display: none; }
+body[data-screen] .cf-preview__section[data-active] { display: block; margin: 0; }
+body[data-screen] .cf-preview__h { display: none; }
+body[data-screen] .cf-preview__stage[data-viewport="desktop"] { padding: var(--cf-space-6); max-width: none; }
+
+@container stage (max-width: 40rem) {
+  .cf-preview__section { padding: 0 var(--cf-space-4); }
+  .cf-preview__section[data-mc-vp="mobile"] { padding: 0; }
+  .cf-preview__grid { grid-template-columns: 1fr; }
+}
+
+/* BATCH3-START · 挂件桌面整页图：右下浮层式面板，固定高度 */
+body[data-screen] .cf-preview__stage[data-viewport="desktop"] .cf-widget { height: var(--cf-size-widget-desktop-h); margin-left: auto; }
+
+/* BATCH4-START · 帖子版式与 parts3 */
+.cf-preview__stage[data-viewport="mobile"] .cf-topic { border: 0; border-radius: var(--cf-radius-none); }
+.cf-preview__pad { padding: var(--cf-space-5); }
+.cf-preview__code { margin: 0; padding: var(--cf-space-5); overflow-x: auto; white-space: pre-wrap; font-family: var(--cf-font-family-mono); font-size: var(--cf-font-size-caption); color: var(--cf-color-text-primary); background: var(--cf-color-bg-subtle); border: var(--cf-border-width-hairline) solid var(--cf-color-border-default); border-radius: var(--cf-radius-md); }
